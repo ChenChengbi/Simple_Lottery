@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Index</title>
+    <script src="./LuckyStrike/jquery-1.7.1.min.js"></script>
+    <script src="./LuckyStrike/Timer.js"></script>
+    <style>
+        #name {
+            font-size: 100px;
+            font-family:"黑体";
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <h1 id="name">Ready to draw a lottery</h1>
+
+        <label id="state">Ready to draw a lottery</label>
+    </div>
+    <script>
+        var interval = 70;
+        var pointThisTime = 0;
+        var LuckerNames = ["陈龙卿", "邓利婷", "胡勋强", "孔燕仁", "刘涵钰", "刘庆城", "龙广", "吕泽西", "莫彩弟", "潘永涛", "关宝承", "孙练", "万钊钊", "吴健", "吴荣涛", "叶耀铭", "游桢杰", "张伟华", "赵攀", "周盈", "朱海峰", "朱炎华"];
+    </script>
+    <script>
+        var LuckerNamesRandom = [];
+        var LuckerNamesRandomLength = 0;
+
+        // When page is loading, initial the array of names, I use random method.
+        $(function () {
+            var tempArrry = LuckerNames;
+            var tempArrryLength = tempArrry.length;
+            var tempArrryLength_initial = tempArrry.length;
+            for (var j = 0; j < tempArrryLength_initial; j++) {
+                var intRandom = parseInt(Math.random() * tempArrryLength);
+                LuckerNamesRandom.push(tempArrry[intRandom]);
+                tempArrry.splice(intRandom, 1);
+                tempArrryLength--;
+            }
+            console.log(LuckerNamesRandom);
+            console.log("There are " + LuckerNamesRandom.length + " people in the LuckerNamesRandom");
+            LuckerNamesRandomLength = LuckerNamesRandom.length;
+        });
+
+        $(function () {
+            $(document).keydown(function (eventData) {
+                var keycode = (eventData.keyCode ? eventData.keyCode : eventData.which);
+                if (keycode == '32') {
+                    StartOrPause();
+                }
+            });
+        });
+
+        var i = 0;
+
+        function StartOrPause() {
+            if ($("#state").text() == "Ready to draw a lottery") {
+                $("#state").text("Drawing a lottery");
+                StartTimer();
+            } else {
+                $("#state").text("Ready to draw a lottery");
+                PauseTimer();
+            }
+        }
+
+
+        var nameText = $("#name");
+
+        function StartTimer() {
+            var name = "";
+            //everyTime(interval, [timer name], function, [max times], [is wait for function complete])
+            $("body").stopTime("haha");
+            $("body").everyTime(interval, "haha", function () {
+                name = LuckerNamesRandom[i];
+                if (i < LuckerNamesRandomLength - 1) {
+                    i += 1;
+                } else {
+                    i = 0;
+                }
+                nameText.text(name);
+            });
+        }
+
+        //stopTime ([timer name], [function])
+        function PauseTimer() {
+            $("body").stopTime("haha");
+
+            //if timer pause, regard that person as a lucker, pull that person out off the array 
+            var Name2takeOut = LuckerNamesRandom[i - 1];
+
+            console.log(LuckerNamesRandom);
+
+            console.log("There are " + LuckerNamesRandom.length + " people in the LuckerNamesRandom");
+
+            console.log("The No." + (i - 1) + " person will be took out off the LuckerNamesRandom");
+
+            LuckerNamesRandom.splice(i - 1, 1);
+
+            console.log(Name2takeOut + " is took out off the LuckerNamesRandom")
+            LuckerNamesRandomLength -= 1;
+        }
+    </script>
+
+
+</body></html>
